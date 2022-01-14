@@ -18,10 +18,9 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
-library(shiny)
-library(plotly)
 library(dplyr)
 library(zoo)
+library(plotly)
 ```
 
 
