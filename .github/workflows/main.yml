@@ -12,8 +12,7 @@ jobs:
     - uses: r-lib/actions/setup-r@master
     - uses: r-lib/actions/setup-pandoc@v1
     - name: Install packages
-      run: |
-        R -e 'install.packages(c("rmarkdown", "flexdashboard", "dplyr", "plotly", "zoo"))'
+      run: Rscript -e 'install.packages(c("rmarkdown", "flexdashboard", "dplyr", "plotly", "zoo"))'
     - name: Render Site
       run: Rscript -e 'rmarkdown::render_site()'
     - name: Commit files
