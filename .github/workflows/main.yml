@@ -12,11 +12,7 @@ jobs:
     - uses: r-lib/actions/setup-r@master
     - name: Install packages
       run: |
-        R -e 'install.packages("rmarkdown")'
-	      R -e 'install.packages("flexdashboard")'
-        R -e 'install.packages("dplyr")'
-	      R -e 'install.packages("plotly")'
-	      R -e 'install.packages("zoo")'
+        R -e 'install.packages(c("rmarkdown", "flexdashboard", "dplyr", "plotly", "zoo"))'
     - name: Render Site
       run: Rscript -e 'rmarkdown::render_site()'
     - name: Commit files
