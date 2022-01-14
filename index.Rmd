@@ -70,9 +70,10 @@ gauge(max(covid_data.bd$people_fully_vaccinated_per_hundred, na.rm = TRUE), min 
 
 ### Data Source (Updated daily)
 ```{r}
-print("Our World in Data, For more info visit https://github.com/owid/covid-19-data")
         
 ```
+>Our World in Data (https://github.com/owid/covid-19-data").
+Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE) Coronavirus repository (https://github.com/CSSEGISandData/COVID-19)
 
 Column { data-width=425 }
 -----------------------------------------------------------------------
