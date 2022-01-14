@@ -1,0 +1,139 @@
+---
+title: "Covid19 Bangladesh Dashboard"
+author: "mhoque"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+    css: style.css
+    social: menu
+    source_code: https://github.com/mozammel47/covid_bd
+---
+<style>                     
+.navbar {
+  background-color:#238b45;
+  border-color:#238b45;
+}
+</style> 
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(shiny)
+library(plotly)
+library(dplyr)
+library(zoo)
+```
+
+
+```{r data, include=FALSE}
+covid_data= readr::read_csv("https://covid.ourworldindata.org/data/owid-covid-data.csv")
+covid_data.bd = covid_data %>% filter(location == "Bangladesh")
+
+covid_data.bd = covid_data.bd %>% 
+  mutate(seven_avg_case= rollmean(new_cases, 7, align="right", fill=0)) %>%
+  mutate(seven_avg_death= rollmean(new_deaths, 7, align="right", fill=0))
+
+hline <- function(y = 0, color = "black") {
+  list(type = "line", x0 = 0, x1 = 1, xref = "paper",
+       y0 = y, y1 = y, line = list(color = color))} 
+```
+
+Column { data-width=150 }
+-----------------------------------------------------------------------
+### tested {.value-box}
+```{r}
+valueBox(value = paste(format(tail(covid_data.bd$total_cases, n=1), big.mark = ","), sep = ""), caption = "Total Positive Cases", 
+icon = "fas fa-ambulance", color = "green")
+        
+```
+
+### tested {.value-box}
+```{r}
+valueBox(value = paste(format(tail(covid_data.bd$total_deaths, n=1), big.mark = ","), sep = ""), caption = "Total Death", 
+icon = "fas fa-procedures", color = "crimson")
+        
+```
+
+### First Dose
+```{r}
+gauge(max(covid_data.bd$people_vaccinated_per_hundred, na.rm = TRUE), min = 0, max = 100, symbol = '%', label="First Dose", gaugeSectors(colors = "green", success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
+))
+  
+```
+
+### Two Doses
+```{r}
+gauge(max(covid_data.bd$people_fully_vaccinated_per_hundred, na.rm = TRUE), min = 0, max = 100, symbol = '%', label="Two Doses", gaugeSectors(colors = "red", success = c(80, 100), warning = c(40, 79), danger = c(0, 39)
+))
+
+```
+
+### Data Source (Updated daily)
+```{r}
+print("Our World in Data, For more info visit https://github.com/owid/covid-19-data")
+        
+```
+
+Column { data-width=425 }
+-----------------------------------------------------------------------
+
+### Daily New Cases
+
+```{r}
+plot_ly(covid_data.bd, x = ~ date, y = ~ new_cases,
+        type = "bar", name = "Daily cases", color = I('#99d8c9')) %>%
+  add_trace(covid_data.bd, x = ~ date, y = ~ seven_avg_case, type = 'scatter',  
+        mode='lines', line = list(color = "#005824", width = 3),name = "7 Days average") %>%
+  plotly::layout(title = "", legend = list(x = 0.03, y = 0.95), yaxis = list(title = "Number of cases"),
+               xaxis = list(title = "Date"), hovermode = "compare",
+               annotations = list(x = ~ max(date), y = ~ tail(new_cases, n=1),
+               text = ~ tail(new_cases, n=1), showarrow = F, textposition = 'top right',
+               textfont = list(size = 20, face="bold")))
+
+```
+
+### Daily Reproduction Rate
+
+```{r}
+plot_ly(covid_data.bd, x= ~date, y=~reproduction_rate,
+  type = 'scatter', mode = 'lines', color = I('#238b45')) %>%
+plotly::layout(shapes = list(hline(1)),
+               list(type = "rect",line = list(color = "black")),
+  yaxis = list(title = "Reproduction rate"),
+  xaxis = list(title = "Date"), hovermode = "compare")
+
+```
+
+Column { data-width=425 }
+-----------------------------------------------------------------------
+
+### Daily Death Cases
+
+```{r}
+plot_ly(covid_data.bd, x = ~ date, y = ~ new_deaths,
+        type = "bar", name = "Daily death case", color = I('pink')) %>%
+  add_trace(covid_data.bd, x = ~ date, y = ~ seven_avg_death, type = 'scatter',  
+            mode='lines', line = list(color = "red", width = 3),name = "7 Days average") %>%
+  plotly::layout(title = "", legend = list(x = 0.03, y = 0.95), yaxis = list(title = "Number of death"),
+                 xaxis = list(title = "Date"),hovermode = "compare",
+                 annotations = list(x = ~ max(date), y = ~ tail(new_deaths, n=1),
+                 text = ~ tail(new_deaths, n=1), showarrow = F, textposition = 'top right',
+                 textfont = list(size = 20, face="bold")))
+
+```
+
+### Vaccination
+
+```{r}
+plot_ly(covid_data.bd, x= ~date, y=~people_vaccinated_per_hundred,
+  type = 'scatter', mode = 'lines', name = "One dose", fill = "tonexty", 
+  fillcolor = 'pink',  color = I('pink')) %>%
+  add_trace(covid_data.bd, x = ~ date, y = ~ people_fully_vaccinated_per_hundred, 
+  type = 'scatter', mode='lines', name = "Two doses",fill = "tozeroy", 
+  fillcolor = 'red',  color = I('red')) %>%
+plotly::layout(title = "", legend = list(x = 0.03, y = 0.95),
+  yaxis = list(title = "People vaccinated (%)"),
+  xaxis = list(title = "Date"), hovermode = "compare")
+
+```
+
