@@ -18,6 +18,8 @@ output:
 
 ```{r setup, include=FALSE}
 library(flexdashboard)
+library(dplyr)
+library(zoo)
 ```
 
 
