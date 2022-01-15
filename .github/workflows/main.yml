@@ -13,7 +13,7 @@ jobs:
     - uses: r-lib/actions/setup-pandoc@v2
     - uses: r-lib/actions/setup-r-dependencies@v2
       with: 
-         extra-packages: any::ggplot2, any::plotly, local::.
+         extra-packages: any::ggplot2, any::plotly, local::./package
          needs: website
     - name: Install packages
       run: Rscript -e 'install.packages(c("rmarkdown", "flexdashboard", "readr", "dplyr", "plotly", "zoo"))'
