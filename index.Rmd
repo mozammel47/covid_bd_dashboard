@@ -7,7 +7,7 @@ output:
     vertical_layout: fill
     css: style.css
     social: menu
-    source_code: https://mozammel47.github.io/covid_bd_dashboard
+    source_code: https://github.com/mozammel47/covid_bd_dashboard
 ---
 <style>                     
 .navbar {
