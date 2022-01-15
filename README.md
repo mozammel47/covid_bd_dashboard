@@ -8,3 +8,5 @@ Johns Hopkins University Center for Systems Science and Engineering (JHU CCSE) C
 Note: Since the case numbers for Bangladesh are updated at around BD time 12.00 to 1.00 pm the dashboard is set to update after this time.
 
 ## Please visit the dashboard [here](https://mozammel47.github.io/covid_bd_dashboard/)
+
+[![covid_bd_dash](https://user-images.githubusercontent.com/68219493/149613298-6d7afec9-9305-40e3-b6f5-05eeaa6c4e12.png)](https://mozammel47.github.io/covid_bd_dashboard/)
