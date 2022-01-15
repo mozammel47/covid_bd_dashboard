@@ -20,6 +20,7 @@ output:
 library(flexdashboard)
 library(dplyr)
 library(zoo)
+library(plotly)
 ```
 
 
