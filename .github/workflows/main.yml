@@ -19,6 +19,6 @@ jobs:
       run: |
         git config --local user.name mozammel47
         git config --local user.email "mozammel_hoque@live.com"
-        git add data/*
+        git add *
         git commit -am "GH ACTION Headlines $(date)"
         git push origin main
